@@ -27,8 +27,8 @@ class _AnimatedArrowButton extends StatelessWidget {
       semanticLabel: btnLbl,
       onPressed: onTap,
       child: SizedBox(
-        height: 80,
-        width: 50,
+        height: 80 * $styles.fixedScale,
+        width: 50 * $styles.fixedScale,
         child: Animate(
           effects: [
             CustomEffect(builder: _buildOpacityTween, duration: duration, curve: Curves.easeOut),
@@ -36,7 +36,7 @@ class _AnimatedArrowButton extends StatelessWidget {
           ],
           child: Transform.rotate(
             angle: pi * .5,
-            child: Icon(Icons.chevron_right, size: 42, color: $styles.colors.white),
+            child: Icon(Icons.chevron_right, size: 42 * $styles.fixedScale, color: $styles.colors.white),
           ),
         ),
       ),

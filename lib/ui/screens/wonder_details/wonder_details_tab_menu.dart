@@ -1,10 +1,11 @@
 import 'package:wonders/common_libs.dart';
 
 class WonderDetailsTabMenu extends StatelessWidget {
-  static const double buttonInset = 12;
-  static const double homeBtnSize = 74;
-  static const double minTabSize = 25;
-  static const double maxTabSize = 100;
+  /// Fixed px sizes, so only the watch tier shrinks them
+  static double get buttonInset => 12 * $styles.fixedScale;
+  static double get homeBtnSize => 74 * $styles.fixedScale;
+  static double get minTabSize => 25 * $styles.fixedScale;
+  static double get maxTabSize => 100 * $styles.fixedScale;
 
   const WonderDetailsTabMenu({
     super.key,
@@ -26,8 +27,10 @@ class WonderDetailsTabMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color iconColor = showBg ? $styles.colors.black : $styles.colors.white;
-    // Measure available size after subtracting the home button size and insets
-    final availableSize = ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md);
+    // Measure available size after subtracting the home button size and insets. The corner
+    // inset comes off both ends too, so the outermost btns clear the rounded corners.
+    final availableSize =
+        ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md - $styles.cornerInset * 2);
     // Calculate tabBtnSize based on availableSize
     final double tabBtnSize = (availableSize / 4).clamp(minTabSize, maxTabSize);
     // Figure out some extra gap, in the case that the tabBtns are wider than the homeBtn
@@ -37,6 +40,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
     // Insets the bg from the rounded wonder icon making it appear offset. The tab btns will use the same padding.
     final buttonInsetPadding = isVertical ? EdgeInsets.only(right: buttonInset) : EdgeInsets.only(top: buttonInset);
     return Padding(
+      // The bg runs the full width and bleeds under the rounded corners; only the btns inset
       padding: isVertical ? EdgeInsets.only(top: safeAreaTop) : EdgeInsets.zero,
       child: Stack(
         children: [
@@ -61,8 +65,15 @@ class WonderDetailsTabMenu extends StatelessWidget {
           /// Buttons
           /// A centered row / column of tabButtons w/ an wonder home button
           Padding(
-            /// When in hz mode add safeArea bottom padding, vertical layout should not need it
-            padding: EdgeInsets.only(bottom: isVertical ? 0 : safeAreaBtm),
+            /// When in hz mode add safeArea bottom padding, vertical layout should not need it.
+            /// The hz inset keeps the outer btns clear of the rounded corners, but not the bg.
+            padding: isVertical
+                ? EdgeInsets.zero
+                : EdgeInsets.only(
+                    bottom: safeAreaBtm,
+                    left: $styles.cornerInset,
+                    right: $styles.cornerInset,
+                  ),
             child: SizedBox(
               width: isVertical ? null : double.infinity,
               height: isVertical ? double.infinity : null,
@@ -82,7 +93,8 @@ class WonderDetailsTabMenu extends StatelessWidget {
                       child: _WonderHomeBtn(
                         size: homeBtnSize,
                         wonderType: wonderType,
-                        borderSize: showBg ? 6 : 2,
+                        // On a ~40pt watch btn the 6pt ring eats a third of the wonder image
+                        borderSize: showBg && $styles.fixedScale >= 1 ? 6 : 2,
                       ),
                     ),
                     Gap(gapAmt),
@@ -193,7 +205,7 @@ class _TabBtn extends StatelessWidget {
     required this.onTap,
   });
 
-  static const double crossBtnSize = 60;
+  static double get crossBtnSize => 60 * $styles.fixedScale;
 
   final int index;
   final TabController tabController;
@@ -214,7 +226,7 @@ class _TabBtn extends StatelessWidget {
     String tabLabel = localizations.tabLabel(tabIndex: index + 1, tabCount: tabController.length);
     tabLabel = '$label: $tabLabel';
 
-    final double iconSize = min(mainAxisSize, 32);
+    final double iconSize = min(mainAxisSize, 32 * $styles.fixedScale);
 
     return MergeSemantics(
       child: Semantics(

@@ -16,7 +16,7 @@ class _NewlyDiscoveredItemsBtn extends StatelessWidget {
       onPressed: onPressed,
       child: Container(
         alignment: Alignment.center,
-        height: 40,
+        height: 40 * $styles.fixedScale,
         color: $styles.colors.black,
         padding: EdgeInsets.symmetric(vertical: $styles.insets.xs),
         child: Text(

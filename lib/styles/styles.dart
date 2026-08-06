@@ -10,21 +10,44 @@ class AppStyle {
   AppStyle({Size? screenSize, this.disableAnimations = false, this.highContrast = false}) {
     if (screenSize == null) {
       scale = 1;
+      insetScale = 1;
+      fixedScale = 1;
+      cornerInset = 0;
       return;
     }
     final shortestSide = screenSize.shortestSide;
     const tabletXl = 1000;
     const tabletLg = 800;
+    // Watch screens are ~200pt across, well below the ~320pt of the smallest phone.
+    const watch = 300;
     if (shortestSide > tabletXl) {
       scale = 1.2;
     } else if (shortestSide > tabletLg) {
       scale = 1.1;
+    } else if (shortestSide < watch) {
+      scale = 0.55;
     } else {
       scale = 1;
     }
+    // A watch is ~87% as wide as a phone but only ~49% as tall, so the constraint is the aspect
+    // ratio, not the size. Padding tightens harder than content to buy back vertical room.
+    insetScale = scale < 1 ? 0.4 : scale;
+    fixedScale = scale < 1 ? scale : 1;
+    cornerInset = scale < 1 ? 14 : 0;
   }
 
   late final double scale;
+
+  /// Scale applied to [insets] only. Matches [scale] except on a watch, see the ctor.
+  late final double insetScale;
+
+  /// Shrink factor for fixed px sizes that don't go through [scale] (tab bar, chrome, imagery).
+  /// Pinned to 1 above the watch tier, so phone and tablet keep the values as written.
+  late final double fixedScale;
+
+  /// Extra inset for controls in a screen corner. A watch display is a rounded rect, so a control
+  /// at the edge is cut by the bezel. Zero elsewhere; full-bleed art ignores it.
+  late final double cornerInset;
   late final bool disableAnimations;
   late final bool highContrast;
 
@@ -37,7 +60,7 @@ class AppStyle {
   late final _Shadows shadows = _Shadows();
 
   /// Padding and margin values
-  late final _Insets insets = _Insets(scale);
+  late final _Insets insets = _Insets(insetScale);
 
   /// Text styles
   late final _Text text = _Text(scale);

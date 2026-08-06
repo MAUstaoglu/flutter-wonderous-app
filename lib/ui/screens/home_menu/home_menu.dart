@@ -36,7 +36,7 @@ class _HomeMenuState extends State<HomeMenu> {
       applicationIcon: Container(
         color: $styles.colors.black,
         padding: EdgeInsets.all($styles.insets.xs),
-        child: WonderousLogo(width: 52),
+        child: WonderousLogo(width: 52 * $styles.fixedScale),
       ),
     );
   }

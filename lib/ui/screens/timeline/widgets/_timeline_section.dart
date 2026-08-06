@@ -41,7 +41,7 @@ class TimelineSection extends StatelessWidget {
 
   Container _buildWonderImage() {
     return Container(
-      height: 160,
+      height: 160 * $styles.fixedScale,
       decoration: BoxDecoration(
         color: data.type.bgColor,
         image: DecorationImage(

@@ -8,6 +8,7 @@ class _AnimatedCutoutOverlay extends StatelessWidget {
     super.key,
     required this.child,
     required this.cutoutSize,
+    this.cutoutOffset = Offset.zero,
     required this.animationKey,
     this.duration,
     required this.swipeDir,
@@ -16,6 +17,10 @@ class _AnimatedCutoutOverlay extends StatelessWidget {
   });
   final Widget child;
   final Size cutoutSize;
+
+  /// Shift of the cutout from the center of this overlay, for when the grid it frames
+  /// isn't centered in the full screen (eg. on a watch, where the tab bar takes a share).
+  final Offset cutoutOffset;
   final Key animationKey;
   final Offset swipeDir;
   final Duration? duration;
@@ -49,19 +54,20 @@ class _AnimatedCutoutOverlay extends StatelessWidget {
       cutoutSize.width * (1 - scaleAmt * anim * swipeDir.dx.abs()),
       cutoutSize.height * (1 - scaleAmt * anim * swipeDir.dy.abs()),
     );
-    return ClipPath(clipper: _CutoutClipper(size), child: child);
+    return ClipPath(clipper: _CutoutClipper(size, cutoutOffset), child: child);
   }
 }
 
 /// Creates an overlay with a hole in the middle of a certain size.
 class _CutoutClipper extends CustomClipper<Path> {
-  _CutoutClipper(this.cutoutSize);
+  _CutoutClipper(this.cutoutSize, this.cutoutOffset);
   final Size cutoutSize;
+  final Offset cutoutOffset;
 
   @override
   Path getClip(Size size) {
-    double padX = (size.width - cutoutSize.width) / 2;
-    double padY = (size.height - cutoutSize.height) / 2;
+    final double left = (size.width - cutoutSize.width) / 2 + cutoutOffset.dx;
+    final double top = (size.height - cutoutSize.height) / 2 + cutoutOffset.dy;
 
     return Path.combine(
       PathOperation.difference,
@@ -69,10 +75,10 @@ class _CutoutClipper extends CustomClipper<Path> {
       Path()
         ..addRRect(
           RRect.fromLTRBR(
-            padX,
-            padY,
-            size.width - padX,
-            size.height - padY,
+            left,
+            top,
+            left + cutoutSize.width,
+            top + cutoutSize.height,
             Radius.circular(6),
           ),
         )
@@ -81,5 +87,6 @@ class _CutoutClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(_CutoutClipper oldClipper) => oldClipper.cutoutSize != cutoutSize;
+  bool shouldReclip(_CutoutClipper oldClipper) =>
+      oldClipper.cutoutSize != cutoutSize || oldClipper.cutoutOffset != cutoutOffset;
 }

@@ -22,7 +22,12 @@ class _BottomTextContent extends StatelessWidget {
     Widget textContent = Text(
       artifact.title,
       overflow: TextOverflow.ellipsis,
-      style: $styles.text.h2.copyWith(color: $styles.colors.black, height: 1.2, fontSize: 32),
+      // At watch scale, 32 only fits ~20 chars a line and long titles ellipsize
+      style: $styles.text.h2.copyWith(
+        color: $styles.colors.black,
+        height: 1.2,
+        fontSize: ($styles.fixedScale < 1 ? 22 : 32) * $styles.fixedScale,
+      ),
       textAlign: TextAlign.center,
       maxLines: 2,
     );

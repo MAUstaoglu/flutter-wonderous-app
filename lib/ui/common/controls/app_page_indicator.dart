@@ -43,7 +43,7 @@ class _AppPageIndicatorState extends State<AppPageIndicator> {
       children: [
         Container(
           color: Colors.transparent,
-          height: 30,
+          height: 30 * $styles.fixedScale,
           alignment: Alignment.center,
           child: ValueListenableBuilder<int>(
             valueListenable: _currentPage,

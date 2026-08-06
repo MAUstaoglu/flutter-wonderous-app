@@ -67,7 +67,7 @@ class ScrollDecorator extends StatefulWidget {
       final double ratio = controller.hasClients ? min(1, controller.position.extentBefore / 60) : 0;
       return IgnorePointerAndSemantics(
         child: Container(
-          height: 24,
+          height: 24 * $styles.fixedScale,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [

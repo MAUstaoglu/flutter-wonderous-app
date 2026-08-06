@@ -17,7 +17,8 @@ class _TitleText extends StatelessWidget {
               child: Column(
                 children: [
                   Gap($styles.insets.md),
-                  Gap(30),
+                  // Unscaled this is 12% of a watch screen
+                  Gap(30 * $styles.fixedScale),
 
                   /// Sub-title row
                   SeparatedRow(

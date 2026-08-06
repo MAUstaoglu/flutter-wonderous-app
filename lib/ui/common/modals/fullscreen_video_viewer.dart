@@ -96,7 +96,8 @@ class _FullscreenVideoViewerState extends State<FullscreenVideoViewer> {
             ),
             SafeArea(
               child: Padding(
-                padding: EdgeInsets.all($styles.insets.md),
+                // Corner btn, needs to clear the rounded display corner
+                padding: EdgeInsets.all($styles.insets.md + $styles.cornerInset),
                 child: PointerInterceptor(
                   child: const BackBtn(),
                 ),

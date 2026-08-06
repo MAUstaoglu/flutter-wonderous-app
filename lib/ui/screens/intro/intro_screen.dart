@@ -11,6 +11,10 @@ import 'package:wonders/ui/common/themed_text.dart';
 import 'package:wonders/ui/common/utils/app_haptics.dart';
 import 'package:wonders/ui/common/utils/duration_utils.dart';
 
+/// The heights below are fixed px, sized for a phone, so they scale like the rest of the
+/// design system. Only watch-class screens, where they overflow the viewport, shrink.
+double _scaled(double value) => value * $styles.fixedScale;
+
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
 
@@ -135,7 +139,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         Semantics(
                           header: true,
                           child: Container(
-                            height: smallMode ? _logoHeightSmall : _logoHeight,
+                            height: _scaled(smallMode ? _logoHeightSmall : _logoHeight),
                             alignment: Alignment.center,
                             child: _WonderousLogo(),
                           ),
@@ -143,8 +147,8 @@ class _IntroScreenState extends State<IntroScreen> {
 
                         // masked image:
                         SizedBox(
-                          height: smallMode ? _imageSizeSmall : _imageSize,
-                          width: smallMode ? _imageSizeSmall : _imageSize,
+                          height: _scaled(smallMode ? _imageSizeSmall : _imageSize),
+                          width: _scaled(smallMode ? _imageSizeSmall : _imageSize),
                           child: ValueListenableBuilder<int>(
                             valueListenable: _currentPage,
                             builder: (_, value, __) {
@@ -162,11 +166,11 @@ class _IntroScreenState extends State<IntroScreen> {
                         ),
 
                         // placeholder gap for text:
-                        Gap(smallMode ? _IntroScreenState._textHeightSmall : _IntroScreenState._textHeight),
+                        Gap(_scaled(smallMode ? _IntroScreenState._textHeightSmall : _IntroScreenState._textHeight)),
 
                         // page indicator:
                         Container(
-                          height: _pageIndicatorHeight,
+                          height: _scaled(_pageIndicatorHeight),
                           alignment: Alignment(0.0, 0),
                           child: AppPageIndicator(
                             count: pageData.length,
@@ -294,13 +298,15 @@ class _Page extends StatelessWidget {
           children: [
             Spacer(),
             Gap(
-              smallMode
-                  ? (_IntroScreenState._imageSizeSmall + _IntroScreenState._logoHeightSmall)
-                  : (_IntroScreenState._imageSize + _IntroScreenState._logoHeight),
+              _scaled(
+                smallMode
+                    ? (_IntroScreenState._imageSizeSmall + _IntroScreenState._logoHeightSmall)
+                    : (_IntroScreenState._imageSize + _IntroScreenState._logoHeight),
+              ),
             ),
             SizedBox(
-              height: smallMode ? _IntroScreenState._textHeightSmall : _IntroScreenState._textHeight,
-              width: smallMode ? 300 : 400,
+              height: _scaled(smallMode ? _IntroScreenState._textHeightSmall : _IntroScreenState._textHeight),
+              width: _scaled(smallMode ? 300 : 400),
               child: StaticTextScale(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -315,7 +321,7 @@ class _Page extends StatelessWidget {
                 ),
               ),
             ),
-            Gap(_IntroScreenState._pageIndicatorHeight),
+            Gap(_scaled(_IntroScreenState._pageIndicatorHeight)),
             Spacer(flex: 2),
           ],
         ),
@@ -334,7 +340,7 @@ class _WonderousLogo extends StatelessWidget {
           child: SvgPicture.asset(
             SvgPaths.compassSimple,
             colorFilter: $styles.colors.offWhite.colorFilter,
-            height: 48,
+            height: _scaled(48),
           ),
         ),
         Gap($styles.insets.xs),

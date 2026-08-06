@@ -29,7 +29,8 @@ class AppHeader extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: SizedBox(
-          height: 64 * $styles.scale,
+          // Corner inset goes on the height too, or the centered btns stay tight to the top.
+          height: 64 * $styles.scale + $styles.cornerInset,
           child: Stack(
             children: [
               MergeSemantics(
@@ -63,7 +64,8 @@ class AppHeader extends StatelessWidget {
                 child: Center(
                   child: Row(
                     children: [
-                      Gap($styles.insets.sm),
+                      // Corner btns need to clear the rounded display corner
+                      Gap($styles.insets.sm + $styles.cornerInset),
                       if (showBackBtn)
                         BackBtn(
                           onPressed: onBack,
@@ -72,7 +74,7 @@ class AppHeader extends StatelessWidget {
                         ),
                       Spacer(),
                       if (trailing != null) trailing!.call(context),
-                      Gap($styles.insets.sm),
+                      Gap($styles.insets.sm + $styles.cornerInset),
                       //if (showBackBtn) Container(width: $styles.insets.lg * 2, alignment: Alignment.centerLeft, child: child),
                     ],
                   ),

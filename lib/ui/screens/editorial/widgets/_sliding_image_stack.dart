@@ -8,7 +8,9 @@ class _SlidingImageStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalSize = Size(400, 600);
+    // Scaled on both axes, so the stack keeps its proportions. Unscaled it is wider than a
+    // watch screen and both photos get cropped to slivers.
+    final totalSize = Size(400, 600) * $styles.fixedScale;
     Container buildPhoto(double scale, String url, Alignment align, {bool top = true}) {
       return Container(
         width: totalSize.width * scale,

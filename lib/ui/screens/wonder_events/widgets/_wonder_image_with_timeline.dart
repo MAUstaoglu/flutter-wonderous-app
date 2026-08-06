@@ -50,7 +50,7 @@ class _WonderImageWithTimeline extends StatelessWidget {
               /// Bottom timeline
               ExcludeSemantics(
                 child: SizedBox(
-                  height: 50,
+                  height: 50 * $styles.fixedScale,
                   child: WondersTimelineBuilder(
                     selectedWonders: [data.type],
                     timelineBuilder: (_, data, isSelected) {
@@ -85,7 +85,7 @@ class _WonderImageWithTimeline extends StatelessWidget {
             child: Image.asset(
               data.type.flattened,
               excludeFromSemantics: true,
-              width: 200,
+              width: 200 * $styles.fixedScale,
               fit: BoxFit.cover,
               alignment: Alignment(0, -.5),
             ),
@@ -94,7 +94,7 @@ class _WonderImageWithTimeline extends StatelessWidget {
           /// Vertical gradient on btm
           Positioned.fill(
             child: BottomCenter(
-              child: ListOverscollGradient(bottomUp: true, size: 200),
+              child: ListOverscollGradient(bottomUp: true, size: 200 * $styles.fixedScale),
             ),
           ),
         ],

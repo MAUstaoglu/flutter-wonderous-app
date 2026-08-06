@@ -9,7 +9,7 @@ class _LargeSimpleQuote extends StatelessWidget {
   Widget build(BuildContext context) {
     return MergeSemantics(
       child: CenteredBox(
-        width: 300,
+        width: 300 * $styles.fixedScale,
         padding: EdgeInsets.symmetric(horizontal: $styles.insets.lg, vertical: $styles.insets.xl),
         child: Column(
           children: [

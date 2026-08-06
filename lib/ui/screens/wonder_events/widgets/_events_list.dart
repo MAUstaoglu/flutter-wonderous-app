@@ -84,8 +84,8 @@ class _EventsListState extends State<_EventsList> {
                     Gap($styles.insets.sm),
                     ...listItems,
                     Gap($styles.insets.xl),
-                    HiddenCollectible(widget.data.type, index: 2, size: 150),
-                    Gap(150),
+                    HiddenCollectible(widget.data.type, index: 2, size: 150 * $styles.fixedScale),
+                    Gap(150 * $styles.fixedScale),
                   ],
                 ),
               ),
@@ -95,7 +95,7 @@ class _EventsListState extends State<_EventsList> {
         if (widget.showTopGradient)
           Positioned.fill(
             child: TopCenter(
-              child: ListOverscollGradient(size: 100),
+              child: ListOverscollGradient(size: 100 * $styles.fixedScale),
             ),
           ),
       ],
