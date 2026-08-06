@@ -29,8 +29,11 @@ class WonderDetailsTabMenu extends StatelessWidget {
     Color iconColor = showBg ? $styles.colors.black : $styles.colors.white;
     // Measure available size after subtracting the home button size and insets. The corner
     // inset comes off both ends too, so the outermost btns clear the rounded corners.
+    // Only the hz bar runs along a screen edge with a rounded corner at each end, so only it
+    // gives up the corner inset (applied as padding on the btn row below).
+    final double cornerInset = isVertical ? 0 : $styles.cornerInset;
     final availableSize =
-        ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md - $styles.cornerInset * 2);
+        ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md - cornerInset * 2);
     // Calculate tabBtnSize based on availableSize
     final double tabBtnSize = (availableSize / 4).clamp(minTabSize, maxTabSize);
     // Figure out some extra gap, in the case that the tabBtns are wider than the homeBtn
@@ -71,8 +74,8 @@ class WonderDetailsTabMenu extends StatelessWidget {
                 ? EdgeInsets.zero
                 : EdgeInsets.only(
                     bottom: safeAreaBtm,
-                    left: $styles.cornerInset,
-                    right: $styles.cornerInset,
+                    left: cornerInset,
+                    right: cornerInset,
                   ),
             child: SizedBox(
               width: isVertical ? null : double.infinity,
@@ -94,7 +97,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
                         size: homeBtnSize,
                         wonderType: wonderType,
                         // On a ~40pt watch btn the 6pt ring eats a third of the wonder image
-                        borderSize: showBg && $styles.fixedScale >= 1 ? 6 : 2,
+                        borderSize: showBg && !$styles.isWatchTier ? 6 : 2,
                       ),
                     ),
                     Gap(gapAmt),

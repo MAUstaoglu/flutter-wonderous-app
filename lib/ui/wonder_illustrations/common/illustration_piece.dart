@@ -103,7 +103,7 @@ class _IllustrationPieceState extends State<IllustrationPiece> {
           /// Determine target height
           // The minHeights are roughly what heightFactor gives on a phone, and a watch screen
           // is shorter than most of them, so the floor is dropped there and heightFactor governs.
-          final double minHeight = $styles.fixedScale < 1 ? 0 : (widget.minHeight ?? 0);
+          final double minHeight = $styles.isWatchTier ? 0 : (widget.minHeight ?? 0);
           final double height = max(
             minHeight,
             constraints.maxHeight * widget.heightFactor,

@@ -7,47 +7,43 @@ export 'colors.dart';
 
 @immutable
 class AppStyle {
-  AppStyle({Size? screenSize, this.disableAnimations = false, this.highContrast = false}) {
-    if (screenSize == null) {
-      scale = 1;
-      insetScale = 1;
-      fixedScale = 1;
-      cornerInset = 0;
-      return;
-    }
-    final shortestSide = screenSize.shortestSide;
+  AppStyle({Size? screenSize, this.disableAnimations = false, this.highContrast = false})
+    : scale = _scaleFor(screenSize);
+
+  static double _scaleFor(Size? screenSize) {
+    if (screenSize == null) return 1;
     const tabletXl = 1000;
     const tabletLg = 800;
     // Watch screens are ~200pt across, well below the ~320pt of the smallest phone.
     const watch = 300;
-    if (shortestSide > tabletXl) {
-      scale = 1.2;
-    } else if (shortestSide > tabletLg) {
-      scale = 1.1;
-    } else if (shortestSide < watch) {
-      scale = 0.55;
-    } else {
-      scale = 1;
-    }
-    // A watch is ~87% as wide as a phone but only ~49% as tall, so the constraint is the aspect
-    // ratio, not the size. Padding tightens harder than content to buy back vertical room.
-    insetScale = scale < 1 ? 0.4 : scale;
-    fixedScale = scale < 1 ? scale : 1;
-    cornerInset = scale < 1 ? 14 : 0;
+    final shortestSide = screenSize.shortestSide;
+    if (shortestSide > tabletXl) return 1.2;
+    if (shortestSide > tabletLg) return 1.1;
+    if (shortestSide < watch) return 0.55;
+    return 1;
   }
 
-  late final double scale;
+  final double scale;
 
-  /// Scale applied to [insets] only. Matches [scale] except on a watch, see the ctor.
-  late final double insetScale;
+  /// Whether the layout is running on a watch-sized screen. Note this is about the screen, not
+  /// the OS: use [PlatformInfo.isWatch] for anything that depends on watchOS itself, like a
+  /// plugin that has no implementation there.
+  bool get isWatchTier => scale < 1;
+
+  /// Scale applied to [insets] only. A watch is ~87% as wide as a phone but only ~49% as tall,
+  /// so the constraint is the aspect ratio, and padding has to tighten harder than content.
+  double get insetScale => isWatchTier ? 0.4 : scale;
 
   /// Shrink factor for fixed px sizes that don't go through [scale] (tab bar, chrome, imagery).
   /// Pinned to 1 above the watch tier, so phone and tablet keep the values as written.
-  late final double fixedScale;
+  double get fixedScale => isWatchTier ? scale : 1;
 
   /// Extra inset for controls in a screen corner. A watch display is a rounded rect, so a control
   /// at the edge is cut by the bezel. Zero elsewhere; full-bleed art ignores it.
-  late final double cornerInset;
+  ///
+  /// TODO: 14 is derived from the 46mm radius and is a little generous on the smaller watches.
+  /// The display's corner radius isn't reported to Flutter, so there is nothing to read it from.
+  double get cornerInset => isWatchTier ? 14 : 0;
   late final bool disableAnimations;
   late final bool highContrast;
 

@@ -1,6 +1,9 @@
 part of '../editorial_screen.dart';
 
 class _CircularTitleBar extends StatelessWidget {
+  /// Intrinsic size of the icons in [icons], all of which are 32pt assets
+  static const double _iconSize = 32;
+
   const _CircularTitleBar({
     super.key,
     required this.titles,
@@ -42,11 +45,11 @@ class _CircularTitleBar extends StatelessWidget {
             BottomCenter(
               child: Padding(
                 padding: EdgeInsets.only(bottom: 20 * $styles.fixedScale),
-                // Natural asset size is 32, which is most of a watch-sized bar
+                // Pinned to the icon's own asset size, which is most of a watch-sized bar
                 child:
                     Image.asset(
                           '${ImagePaths.common}/${icons[index]}',
-                          height: 32 * $styles.fixedScale,
+                          height: _iconSize * $styles.fixedScale,
                         )
                         .maybeAnimate(key: ValueKey(index))
                         .fade()

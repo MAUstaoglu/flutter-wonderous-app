@@ -17,17 +17,15 @@ class _BottomTextContent extends StatelessWidget {
   final bool overlapMode;
   int get _currentPage => state._currentPage.value.round();
 
+  /// At watch scale 32 only fits ~20 chars a line, and long titles ellipsize
+  double get _titleSize => ($styles.isWatchTier ? 22 : 32) * $styles.fixedScale;
+
   @override
   Widget build(BuildContext context) {
     Widget textContent = Text(
       artifact.title,
       overflow: TextOverflow.ellipsis,
-      // At watch scale, 32 only fits ~20 chars a line and long titles ellipsize
-      style: $styles.text.h2.copyWith(
-        color: $styles.colors.black,
-        height: 1.2,
-        fontSize: ($styles.fixedScale < 1 ? 22 : 32) * $styles.fixedScale,
-      ),
+      style: $styles.text.h2.copyWith(color: $styles.colors.black, height: 1.2, fontSize: _titleSize),
       textAlign: TextAlign.center,
       maxLines: 2,
     );

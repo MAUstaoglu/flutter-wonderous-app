@@ -83,7 +83,7 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
         bool shortMode = constraints.biggest.height < 700;
         // A watch shares ~250pt between illustration, title and tab bar, so take a % of the
         // viewport rather than a fixed height, which would push the title under the bar.
-        double illustrationHeight = $styles.fixedScale < 1 ? constraints.biggest.height * .4 : (shortMode ? 250 : 280);
+        double illustrationHeight = $styles.isWatchTier ? constraints.biggest.height * .4 : (shortMode ? 250 : 280);
         double minAppBarHeight = (shortMode ? 80 : 150) * $styles.fixedScale;
 
         /// Attempt to maintain a similar aspect ratio for the image within the app-bar

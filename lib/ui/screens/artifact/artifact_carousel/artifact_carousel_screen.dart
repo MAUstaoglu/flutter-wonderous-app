@@ -60,17 +60,18 @@ class _ArtifactScreenState extends State<ArtifactCarouselScreen> {
   Widget build(BuildContext context) {
     bool shortMode = context.heightPx <= 800;
     bool overlapMode = context.heightPx <= 450;
-    final bool isWatch = $styles.fixedScale < 1;
+    final bool isWatch = $styles.isWatchTier;
     // A watch keeps the overlapping style but not the /2 divisor, which would leave
     // the artifact with ~124pt of a 248pt screen.
     final double bottomHeight =
         context.heightPx / (overlapMode && !isWatch ? 2 : 2.75); // Prev 340, dynamic seems to work better
     // Allow objects to become wider as the screen becomes tall, this allows
     // them to grow taller as well, filling the available space better.
-    // A watch reserves the header's real height rather than the phone's 200pt allowance,
-    // and takes what is left. The 250 floor is taller than the whole screen, so it is dropped.
+    // A watch reserves the header's real height rather than the phone's 200pt allowance, and
+    // takes what is left. The 250 floor is taller than the whole screen, so it drops to a floor
+    // that only guards against itemWidth reaching zero, which PageView will not accept.
     double itemHeight = isWatch
-        ? context.heightPx - 64 * $styles.scale - bottomHeight
+        ? (context.heightPx - 64 * $styles.scale - bottomHeight).clamp(120 * $styles.fixedScale, 400)
         : (context.heightPx - 200 - bottomHeight).clamp(250, 400);
     double itemWidth = itemHeight * .666;
     // TODO: This could be optimized to only run if the size has changed...is it worth it?
