@@ -182,10 +182,18 @@ packages:
     dependency: transitive
     description:
       name: ffi
-      sha256: "289279317b4b16eb2bb7e271abccd4bf84ec9bdcbe999e278a94b804f5630418"
+      sha256: "6d7fd89431262d8f3125e81b50d3847a091d846eafcd4fdb88dd06f36d705a45"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.4"
+    version: "2.2.0"
+  ffi_leak_tracker:
+    dependency: transitive
+    description:
+      name: ffi_leak_tracker
+      sha256: "4093d4ef9ca06ffe2786e73bfb25e22aa92112b9bb4ec941f11e3e6b61489a97"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   file:
     dependency: transitive
     description:
@@ -284,6 +292,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.3"
+  flutter_watchos:
+    dependency: "direct main"
+    description:
+      name: flutter_watchos
+      sha256: bfddda87632ba8683ebf38c2fe99ef092059f940996c6f9752552fad15462fd6
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0-beta.7"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -501,10 +517,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
+      sha256: "1741988757a65eb6b36abe716829688cf01910bbf91c34354ff7ec1c3de2b349"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.18.0"
   nested:
     dependency: transitive
     description:
@@ -533,18 +549,26 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: f69da0d3189a4b4ceaeb1a3defb0f329b3b352517f52bed4290f83d4f06bc08d
+      sha256: "127e1751e37ffb2ff4658beeaca77bad0c27bf5f932bd3a501c2296926d4b481"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "10.2.1"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
       name: package_info_plus_platform_interface
-      sha256: "202a487f08836a592a6bd4f901ac69b3a8f146af552bbd14407b6b41e1c3f086"
+      sha256: db762cb2f4f25ee60fb6359773861b0f199e00b90d237bd85a76a1e806b46ef4
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.1"
+    version: "4.1.0"
+  package_info_plus_watchos:
+    dependency: "direct main"
+    description:
+      name: package_info_plus_watchos
+      sha256: "867dc35181784815fc1eb45713f2fa2aee1a52e5e56dd41c739a32f42ed56238"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   particle_field:
     dependency: "direct main"
     description:
@@ -609,6 +633,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  path_provider_watchos:
+    dependency: "direct main"
+    description:
+      name: path_provider_watchos
+      sha256: "33a66ceac1c3d0825a354b517c62ce59453d2ed897dc0f3b338425ecd6fe9525"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   path_provider_windows:
     dependency: transitive
     description:
@@ -761,6 +793,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
+  shared_preferences_watchos:
+    dependency: "direct main"
+    description:
+      name: shared_preferences_watchos
+      sha256: "205ac141582c6bb32dffbfd0af27a93ffd49621c2ad2e0846838fd45f89d3f87"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   shared_preferences_web:
     dependency: transitive
     description:
@@ -910,6 +950,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  url_launcher_watchos:
+    dependency: "direct main"
+    description:
+      name: url_launcher_watchos
+      sha256: "7f061ca494423c259d9fa91d33bc98f5e45940a07d572806e9b10318c7d83610"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   url_launcher_web:
     dependency: transitive
     description:
@@ -978,10 +1026,10 @@ packages:
     dependency: "direct main"
     description:
       name: webview_flutter
-      sha256: c3e4fe614b1c814950ad07186007eff2f2e5dd2935eba7b9a9a1af8e5885f1ba
+      sha256: d53e1ccf5516f25017e3c9d44c39034db352d20fa34fe200674270242c2c5111
       url: "https://pub.dev"
     source: hosted
-    version: "4.13.0"
+    version: "4.14.1"
   webview_flutter_android:
     dependency: transitive
     description:
@@ -1010,10 +1058,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: d7cb55e04cd34096cd3a79b3330245f54cb96a370a1c27adb3c84b917de8b08e
+      sha256: ba6f4bba816c8d7e3c1580e170f3786d216951cc6b94babc3b814c08d2cb2738
       url: "https://pub.dev"
     source: hosted
-    version: "5.15.0"
+    version: "6.3.0"
   xdg_directories:
     dependency: transitive
     description:
