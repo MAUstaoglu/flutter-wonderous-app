@@ -29,6 +29,7 @@ dependencies:
   flutter_native_splash: ^2.3.3
   flutter_staggered_grid_view: ^0.7.0
   flutter_svg: ^2.0.1
+  flutter_watchos: ^0.1.0-beta.7
   gap: ^3.0.1
   get_it: ^7.2.0
   get_it_mixin: ^4.2.2
@@ -42,21 +43,27 @@ dependencies:
   image_fade: ^0.6.2
   intl: ^0.20.2
   internet_connection_checker: ^3.0.1
-  package_info_plus: ^9.0.0
+  package_info_plus: ^10.2.1
+  package_info_plus_watchos: ^0.1.0
   particle_field: ^1.0.0
   path_provider: ^2.1.1
+  path_provider_watchos: ^0.0.1
   pointer_interceptor: ^0.10.1+1
   provider: ^6.0.5
   rnd: ^0.2.0
   shared_preferences: ^2.0.17
+  shared_preferences_watchos: ^0.1.0
   sized_context: ^1.0.0+1
   smooth_page_indicator: ^2.0.1
   unsplash_client: ^3.0.0
   url_launcher: ^6.1.14
+  url_launcher_watchos: ^0.0.1
   webview_flutter: ^4.0.2
   youtube_player_iframe: ^6.0.0
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   icons_launcher: ^3.0.0
   flutter_lints: ^6.0.0
   dependency_validator: ^5.0.3

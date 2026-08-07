@@ -80,7 +80,8 @@ class _ScrollingContent extends StatelessWidget {
         data.type,
         index: 0,
         matches: getTypesForSlot(slot),
-        size: 128,
+        // 128 is 61% of a watch's content width
+        size: 128 * $styles.fixedScale,
       );
     }
 
@@ -138,7 +139,7 @@ class _ScrollingContent extends StatelessWidget {
                     _MapsThumbnail(data),
                     Gap($styles.insets.md),
                     ..._contentSection([Center(child: buildHiddenCollectible(slot: 3))]),
-                    Gap(150),
+                    Gap(150 * $styles.fixedScale),
                   ],
                 ),
               ),
@@ -177,7 +178,11 @@ class _YouTubeThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // On btn pressed:
-    void handlePressed() => context.go(ScreenPaths.video(id));
+    // The player renders through webview_flutter, which watchOS has no implementation for,
+    // so hand the video to the paired iPhone instead.
+    void handlePressed() => PlatformInfo.isWatch
+        ? launchUrl(Uri.parse('https://www.youtube.com/watch?v=$id'))
+        : context.go(ScreenPaths.video(id));
 
     return MergeSemantics(
       child: ConstrainedBox(
@@ -250,7 +255,8 @@ class _MapsThumbnailState extends State<_MapsThumbnail> {
   @override
   Widget build(BuildContext context) {
     void handlePressed() => context.go(ScreenPaths.maps(widget.data.type));
-    if (PlatformInfo.isDesktop) return SizedBox.shrink();
+    // google_maps_flutter has no watchOS implementation, so building it throws
+    if (PlatformInfo.isDesktop || PlatformInfo.isWatch) return SizedBox.shrink();
     return AspectRatio(
       aspectRatio: 1.65,
       child: MergeSemantics(

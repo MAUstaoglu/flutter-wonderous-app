@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_watchos/flutter_watchos.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:wonders/common_libs.dart';
 
@@ -23,6 +24,10 @@ class PlatformInfo {
   static bool get isMacOS => defaultTargetPlatform == TargetPlatform.macOS;
   static bool get isAndroid => defaultTargetPlatform == TargetPlatform.android;
   static bool get isIOS => defaultTargetPlatform == TargetPlatform.iOS;
+
+  /// Apple Watch. A subset of [isIOS] and [isMobile], which are both true there too, so
+  /// anything that needs a real iPhone/iPad has to exclude the watch explicitly.
+  static bool get isWatch => !kIsWeb && FlutterWatchosPlatform.isWatch;
 
   static Future<bool> get isConnected async => await InternetConnectionChecker.instance.hasConnection;
   static Future<bool> get isDisconnected async => (await isConnected) == false;

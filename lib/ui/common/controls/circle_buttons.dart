@@ -13,7 +13,8 @@ class CircleBtn extends StatelessWidget {
     required this.semanticLabel,
   });
 
-  static double defaultSize = 48;
+  /// Fixed px size, so only the watch tier shrinks it
+  static double get defaultSize => 48 * $styles.fixedScale;
 
   final VoidCallback? onPressed;
   final Color? bgColor;
@@ -53,7 +54,8 @@ class CircleIconBtn extends StatelessWidget {
   });
 
   //TODO: Reduce size if design re-exports icon-images without padding
-  static double defaultSize = 28;
+  /// Scales with [CircleBtn.defaultSize], to keep its ratio to the circle
+  static double get defaultSize => 28 * $styles.fixedScale;
 
   final AppIcons icon;
   final VoidCallback? onPressed;

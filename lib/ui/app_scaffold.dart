@@ -1,3 +1,4 @@
+import 'package:flutter_watchos/flutter_watchos.dart';
 import 'package:wonders/common_libs.dart';
 import 'package:wonders/ui/common/app_scroll_behavior.dart';
 
@@ -9,6 +10,8 @@ class WondersAppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The watch clock draws over the artwork in the top-right, and can't be moved, so hide it
+    WatchStatusBar.hidden = FlutterWatchosPlatform.isWatch;
     // Listen to the device size, and update AppStyle when it changes
     final mq = MediaQuery.of(context);
     appLogic.handleAppSizeChanged(mq.size);
@@ -30,7 +33,8 @@ class WondersAppScaffold extends StatelessWidget {
           // Use a custom scroll behavior across entire app
           child: ScrollConfiguration(
             behavior: AppScrollBehavior(),
-            child: child,
+            // Watch physics, so the crown stops with a native bounce instead of an iOS stretch
+            child: FlutterWatchosPlatform.isWatch ? WatchCrownScroll(child: child) : child,
           ),
         ),
       ),

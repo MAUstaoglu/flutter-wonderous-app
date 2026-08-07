@@ -7,24 +7,72 @@ export 'colors.dart';
 
 @immutable
 class AppStyle {
-  AppStyle({Size? screenSize, this.disableAnimations = false, this.highContrast = false}) {
-    if (screenSize == null) {
-      scale = 1;
-      return;
-    }
-    final shortestSide = screenSize.shortestSide;
+  AppStyle({Size? screenSize, this.disableAnimations = false, this.highContrast = false})
+    : scale = _scaleFor(screenSize);
+
+  /// Logical width of the widest watch, which is what the watch layout was
+  /// authored against. Measured, not assumed — Flutter is handed
+  /// `WKInterfaceDevice.screenBounds`, so these are roughly half the pixel
+  /// dimensions and do not match the marketing sizes:
+  ///
+  /// | model      | logical   | physical  |
+  /// |------------|-----------|-----------|
+  /// | 42mm       | 187 x 223 | 374 x 446 |
+  /// | 46mm       | 208 x 248 | 416 x 496 |
+  /// | Ultra 49mm | 211 x 257 | 422 x 514 |
+  static const double _watchReferenceWidth = 211;
+
+  /// Scale on the reference watch. Every other watch takes a share of it.
+  static const double _watchScale = 0.55;
+
+  static double _scaleFor(Size? screenSize) {
+    if (screenSize == null) return 1;
     const tabletXl = 1000;
     const tabletLg = 800;
-    if (shortestSide > tabletXl) {
-      scale = 1.2;
-    } else if (shortestSide > tabletLg) {
-      scale = 1.1;
-    } else {
-      scale = 1;
+    // Watch screens are ~200pt across, well below the ~320pt of the smallest phone.
+    const watch = 300;
+    final shortestSide = screenSize.shortestSide;
+    if (shortestSide > tabletXl) return 1.2;
+    if (shortestSide > tabletLg) return 1.1;
+    if (shortestSide < watch) {
+      // Proportional, not flat. A 42mm is 187pt where an Ultra is 211 — 11%
+      // narrower — so a single factor tuned on the big watch leaves the small
+      // one with the same absolute sizes on less screen, and content that just
+      // fits at the top of the range overflows at the bottom.
+      return _watchScale * (shortestSide / _watchReferenceWidth);
     }
+    return 1;
   }
 
-  late final double scale;
+  final double scale;
+
+  /// Whether the layout is running on a watch-sized screen. Note this is about the screen, not
+  /// the OS: use [PlatformInfo.isWatch] for anything that depends on watchOS itself, like a
+  /// plugin that has no implementation there.
+  bool get isWatchTier => scale < 1;
+
+  /// How this watch compares to the one the layout was authored on: 1.0 on the
+  /// widest, ~0.89 on a 42mm. Zero outside the watch tier, where it is unused.
+  double get _watchFactor => isWatchTier ? scale / _watchScale : 0;
+
+  /// Scale applied to [insets] only. A watch is ~87% as wide as a phone but only ~49% as tall,
+  /// so the constraint is the aspect ratio, and padding has to tighten harder than content.
+  ///
+  /// Tracks [_watchFactor] so padding shrinks with the screen rather than
+  /// eating a bigger share of a small one.
+  double get insetScale => isWatchTier ? 0.4 * _watchFactor : scale;
+
+  /// Shrink factor for fixed px sizes that don't go through [scale] (tab bar, chrome, imagery).
+  /// Pinned to 1 above the watch tier, so phone and tablet keep the values as written.
+  double get fixedScale => isWatchTier ? scale : 1;
+
+  /// Extra inset for controls in a screen corner. A watch display is a rounded rect, so a control
+  /// at the edge is cut by the bezel. Zero elsewhere; full-bleed art ignores it.
+  ///
+  /// 14 is derived from the widest watch's corner radius and scales with the
+  /// screen. The radius still isn't reported to Flutter, so this tracks width
+  /// as a proxy — imperfect, but far closer than one constant for every model.
+  double get cornerInset => isWatchTier ? 14 * _watchFactor : 0;
   late final bool disableAnimations;
   late final bool highContrast;
 
@@ -37,7 +85,7 @@ class AppStyle {
   late final _Shadows shadows = _Shadows();
 
   /// Padding and margin values
-  late final _Insets insets = _Insets(scale);
+  late final _Insets insets = _Insets(insetScale);
 
   /// Text styles
   late final _Text text = _Text(scale);

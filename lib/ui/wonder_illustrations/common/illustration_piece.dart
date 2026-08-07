@@ -101,13 +101,17 @@ class _IllustrationPieceState extends State<IllustrationPiece> {
           final double introZoom = (widget.initialScale - 1) * (1 - curvedAnim);
 
           /// Determine target height
+          // The minHeights are roughly what heightFactor gives on a phone, and a watch screen
+          // is shorter than most of them, so the floor is dropped there and heightFactor governs.
+          final double minHeight = $styles.isWatchTier ? 0 : (widget.minHeight ?? 0);
           final double height = max(
-            widget.minHeight ?? 0,
+            minHeight,
             constraints.maxHeight * widget.heightFactor,
           );
 
           /// Combine all the translations, initial + offset + dynamicHzOffset + fractionalOffset
-          Offset finalTranslation = widget.offset;
+          // px offsets were measured against a phone-sized piece, so they scale with it
+          Offset finalTranslation = widget.offset * $styles.fixedScale;
           // Initial
           if (widget.initialOffset != Offset.zero) {
             finalTranslation += widget.initialOffset * (1 - curvedAnim);

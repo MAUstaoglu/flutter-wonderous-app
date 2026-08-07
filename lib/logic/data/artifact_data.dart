@@ -1,3 +1,5 @@
+import 'package:wonders/logic/common/platform_info.dart';
+
 class ArtifactData {
   ArtifactData({
     required this.objectId,
@@ -35,7 +37,17 @@ class ArtifactData {
   String get selfHostedImageUrlSmall => getSelfHostedImageUrlSmall(objectId);
   String get selfHostedImageUrlMedium => getSelfHostedImageUrlMedium(objectId);
 
-  static String getSelfHostedImageUrl(String id) => '$baseSelfHostedImagePath$id.jpg';
+  // On a watch every variant collapses to _600. The originals here are the
+  // heaviest images in the app — measured at 968KB and 2.2MB — against a
+  // ~200 kB/s link through the paired iPhone, so a single artifact could take
+  // ten seconds. _600 is 66-97KB, and at 600px it still exceeds anything a
+  // 42/46/49mm screen shows outside the fullscreen viewer, where it costs a
+  // little softness for roughly twenty times less data.
+  static String getSelfHostedImageUrl(String id) => PlatformInfo.isWatch
+      ? getSelfHostedImageUrlSmall(id)
+      : '$baseSelfHostedImagePath$id.jpg';
   static String getSelfHostedImageUrlSmall(String id) => '$baseSelfHostedImagePath${id}_600.jpg';
-  static String getSelfHostedImageUrlMedium(String id) => '$baseSelfHostedImagePath${id}_2000.jpg';
+  static String getSelfHostedImageUrlMedium(String id) => PlatformInfo.isWatch
+      ? getSelfHostedImageUrlSmall(id)
+      : '$baseSelfHostedImagePath${id}_2000.jpg';
 }

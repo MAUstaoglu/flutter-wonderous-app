@@ -19,10 +19,16 @@ class PhotoGallery extends StatefulWidget {
   const PhotoGallery({
     super.key,
     this.imageSize,
+    this.contentPadding = EdgeInsets.zero,
     required this.collectionId,
     required this.wonderType,
   });
   final Size? imageSize;
+
+  /// Space claimed by the tab bar. The gallery stays full-bleed on phone and tablet, where the
+  /// bar floating over a photo reads as depth. On a watch there isn't the room for that, so the
+  /// grid centers itself in the area above the bar instead. See [_bottomInset].
+  final EdgeInsets contentPadding;
   final String collectionId;
   final WonderType wonderType;
 
@@ -32,6 +38,10 @@ class PhotoGallery extends StatefulWidget {
 
 class _PhotoGalleryState extends State<PhotoGallery> {
   static const int _gridSize = 5;
+
+  /// The part of [PhotoGallery.contentPadding] the grid actually gives up, which is none of it
+  /// off the watch tier.
+  double get _bottomInset => $styles.isWatchTier ? widget.contentPadding.bottom : 0;
   // Index starts in the middle of the grid (eg, 25 items, index will start at 13)
   int _index = ((_gridSize * _gridSize) / 2).round();
   Offset _lastSwipeDir = Offset.zero;
@@ -189,16 +199,26 @@ class _PhotoGalleryState extends State<PhotoGallery> {
           Size imgSize = context.isLandscape
               ? Size(context.widthPx * .5, context.heightPx * .66)
               : Size(context.widthPx * .66, context.heightPx * .5);
+          if ($styles.isWatchTier) {
+            // A watch screen is nearly square, so the sizes above give a landscape cell.
+            // Take the width from the height instead, at a gentler ratio than the phone's ~1.6.
+            final double h = (context.heightPx - _bottomInset) * .5;
+            imgSize = Size(h / 1.25, h);
+          }
           imgSize = (widget.imageSize ?? imgSize) * _scale;
           // Get transform offset for the current _index
           final padding = $styles.insets.md;
           var gridOffset = _calculateCurrentOffset(padding, imgSize);
           gridOffset += Offset(0, -context.mq.padding.top / 2);
+          // Center in the space above the tab bar, not the whole screen
+          gridOffset += Offset(0, -_bottomInset / 2);
           final offsetTweenDuration = _skipNextOffsetTween ? Duration.zero : swipeDuration;
           final cutoutTweenDuration = _skipNextOffsetTween ? Duration.zero : swipeDuration * .5;
           return _AnimatedCutoutOverlay(
             animationKey: ValueKey(_index),
             cutoutSize: imgSize,
+            // The grid is shifted up by this much, so the hole must be too.
+            cutoutOffset: Offset(0, -_bottomInset / 2),
             swipeDir: _lastSwipeDir,
             duration: cutoutTweenDuration,
             opacity: _scale == 1 ? .7 : .5,
@@ -286,7 +306,7 @@ class _PhotoGalleryState extends State<PhotoGallery> {
                       child: HiddenCollectible(
                         widget.wonderType,
                         index: 1,
-                        size: 100,
+                        size: 100 * $styles.fixedScale,
                         focus: _focusNodes[index],
                       ),
                     )

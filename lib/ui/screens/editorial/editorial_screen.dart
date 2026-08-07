@@ -4,6 +4,7 @@ import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_circular_text/circular_text.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' deferred as googleMap;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wonders/common_libs.dart';
 import 'package:wonders/logic/common/animate_utils.dart';
 import 'package:wonders/logic/common/platform_info.dart';
@@ -80,8 +81,10 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
     return LayoutBuilder(
       builder: (_, constraints) {
         bool shortMode = constraints.biggest.height < 700;
-        double illustrationHeight = shortMode ? 250 : 280;
-        double minAppBarHeight = shortMode ? 80 : 150;
+        // A watch shares ~250pt between illustration, title and tab bar, so take a % of the
+        // viewport rather than a fixed height, which would push the title under the bar.
+        double illustrationHeight = $styles.isWatchTier ? constraints.biggest.height * .4 : (shortMode ? 250 : 280);
+        double minAppBarHeight = (shortMode ? 80 : 150) * $styles.fixedScale;
 
         /// Attempt to maintain a similar aspect ratio for the image within the app-bar
         double maxAppBarHeight = min(context.widthPx, $styles.sizes.maxContentWidth1) * 1.2;
@@ -201,7 +204,8 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
                     child: Align(
                       alignment: backBtnAlign,
                       child: Padding(
-                        padding: EdgeInsets.all($styles.insets.sm),
+                        // Not in an AppHeader, so it takes the corner inset itself
+                        padding: EdgeInsets.all($styles.insets.sm + $styles.cornerInset),
                         child: BackBtn(icon: AppIcons.north, onPressed: _handleBackPressed),
                       ),
                     ),

@@ -1,6 +1,9 @@
 part of '../editorial_screen.dart';
 
 class _CircularTitleBar extends StatelessWidget {
+  /// Intrinsic size of the icons in [icons], all of which are 32pt assets
+  static const double _iconSize = 32;
+
   const _CircularTitleBar({
     super.key,
     required this.titles,
@@ -13,9 +16,11 @@ class _CircularTitleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double barSize = 100; // the actual size of this widget
-    double barTopPadding = 40; // negative space at the top of the bar
-    double circleSize = 190; // circle is bigger than bar, and overhangs it
+    // Scale all three together, so the circle keeps its overhang and the text keeps its arc.
+    // Unscaled, the circle is as wide as a watch screen and the title runs off both edges.
+    double barSize = 100 * $styles.fixedScale; // the actual size of this widget
+    double barTopPadding = 40 * $styles.fixedScale; // negative space at the top of the bar
+    double circleSize = 190 * $styles.fixedScale; // circle is bigger than bar, and overhangs it
     assert(index >= 0 && index < titles.length, 'Can not find a title for index $index');
     // note: this offset eliminates a subpixel line Flutter draws below the header
     return Transform.translate(
@@ -39,16 +44,21 @@ class _CircularTitleBar extends StatelessWidget {
 
             BottomCenter(
               child: Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Image.asset('${ImagePaths.common}/${icons[index]}')
-                    .maybeAnimate(key: ValueKey(index))
-                    .fade()
-                    .scale(
-                      begin: Offset(.5, .5),
-                      end: Offset(1, 1),
-                      curve: Curves.easeOutBack,
-                      duration: $styles.times.med,
-                    ),
+                padding: EdgeInsets.only(bottom: 20 * $styles.fixedScale),
+                // Pinned to the icon's own asset size, which is most of a watch-sized bar
+                child:
+                    Image.asset(
+                          '${ImagePaths.common}/${icons[index]}',
+                          height: _iconSize * $styles.fixedScale,
+                        )
+                        .maybeAnimate(key: ValueKey(index))
+                        .fade()
+                        .scale(
+                          begin: Offset(.5, .5),
+                          end: Offset(1, 1),
+                          curve: Curves.easeOutBack,
+                          duration: $styles.times.med,
+                        ),
               ),
             ),
           ],
@@ -114,7 +124,8 @@ class _AnimatedCircleWithTextState extends State<_AnimatedCircleWithText> with S
             decoration: BoxDecoration(shape: BoxShape.circle, color: $styles.colors.offWhite),
             alignment: Alignment.center,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              // Inset of the text circle inside the disc; scales with the disc.
+              padding: EdgeInsets.all(16 * $styles.fixedScale),
               // 2 circles that are counter rotated / opposite (one on top, one on bottom)
               // Each time index is changed, the stack is rotated 180 degrees.
               // When the animation completes, the rotation snaps back to 0 and the titles also swap position
@@ -153,7 +164,7 @@ class _AnimatedCircleWithTextState extends State<_AnimatedCircleWithText> with S
       children: [
         TextItem(
           text: Text(title.toUpperCase(), style: textStyle),
-          space: 9,
+          space: 9 * $styles.fixedScale,
           startAngle: -90,
           startAngleAlignment: StartAngleAlignment.center,
           direction: CircularTextDirection.clockwise,

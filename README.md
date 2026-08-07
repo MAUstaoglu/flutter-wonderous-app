@@ -58,6 +58,15 @@ Examples:
 
 This app uses the new [Impeller Runtime](https://docs.flutter.dev/perf/impeller) by default on iOS.
 
+### Apple Watch
+
+Wonderous runs on Apple Watch too, using
+[flutter-watchos](https://flutterwatch.dev), a Flutter SDK for watchOS. The iOS,
+Android and web builds are unchanged.
+
+For anything about the SDK itself, see
+[flutterwatch.dev](https://flutterwatch.dev).
+
 # About gskinner
 We build innovative digital experiences for smart clients, and we love how Flutter unleashes our creativity when building multi-platform apps. Don't hesitate to [stop by our site](https://gskinner.com/) to learn more about what we do, or check out other [innovative Flutter projects](https://flutter.gskinner.com) we've built. We'd love to hear from you!
 

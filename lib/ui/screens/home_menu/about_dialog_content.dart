@@ -11,7 +11,9 @@ class AboutDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void handleTap(String url) {
-      if (PlatformInfo.isDesktopOrWeb) {
+      // There is no WebView on watchOS, and pushing one throws while building the Scaffold,
+      // which takes the back btn with it. Hand the link to the paired iPhone instead.
+      if (PlatformInfo.isDesktopOrWeb || PlatformInfo.isWatch) {
         launchUrl(Uri.parse(url));
       } else {
         Navigator.push(context, CupertinoPageRoute(builder: (_) => FullscreenWebView(url)));

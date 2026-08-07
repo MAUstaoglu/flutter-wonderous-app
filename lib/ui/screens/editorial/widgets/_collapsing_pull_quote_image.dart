@@ -10,16 +10,16 @@ class _CollapsingPullQuoteImage extends StatelessWidget {
     // Start transitioning when we are halfway up the screen
     final collapseStartPx = context.heightPx * 1;
     final collapseEndPx = context.heightPx * .15;
-    const double imgHeight = 500;
-    const double outerPadding = 100;
+    // Fixed px throughout. Unscaled, the quote and its margins ate a whole watch screen.
+    final double imgHeight = 500 * $styles.fixedScale;
+    final double outerPadding = 100 * $styles.fixedScale;
 
     /// A single piece of quote text, this widget has one on top, and one on bottom
     Widget buildText(String value, double collapseAmt, {required bool top, bool isAuthor = false}) {
-      /// Use a fixed font-size for this for consistent scaling
-      var quoteStyle = $styles.text.quote1.copyWith(fontSize: 32);
+      var quoteStyle = $styles.text.quote1.copyWith(fontSize: 32 * $styles.fixedScale);
       quoteStyle = quoteStyle.copyWith(color: $styles.colors.caption);
       if (isAuthor) {
-        quoteStyle = quoteStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w600);
+        quoteStyle = quoteStyle.copyWith(fontSize: 20 * $styles.fixedScale, fontWeight: FontWeight.w600);
       }
       double offsetY = (imgHeight / 2 + outerPadding * .25) * (1 - collapseAmt);
       if (top) offsetY *= -1; // flip?
@@ -70,7 +70,7 @@ class _CollapsingPullQuoteImage extends StatelessWidget {
                         children: [
                           Container(
                             alignment: Alignment.topRight,
-                            margin: const EdgeInsets.all(12),
+                            margin: EdgeInsets.all(12 * $styles.fixedScale),
                             child: ClipPath(
                               clipper: CurvedTopClipper(),
                               child: _buildImage(collapseAmt),
@@ -85,19 +85,19 @@ class _CollapsingPullQuoteImage extends StatelessWidget {
                 /// Collapsing text
                 Positioned.fill(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    margin: EdgeInsets.symmetric(horizontal: 24 * $styles.fixedScale),
                     child: BlendMask(
                       blendModes: const [BlendMode.colorBurn],
                       child: StaticTextScale(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(height: 32), // push down vertical centre
+                            SizedBox(height: 32 * $styles.fixedScale), // push down vertical centre
                             buildText(data.pullQuote1Top, collapseAmt, top: true),
                             buildText(data.pullQuote1Bottom, collapseAmt, top: false),
                             if (data.pullQuote1Author.isNotEmpty) ...[
                               Container(
-                                margin: const EdgeInsets.only(top: 16),
+                                margin: EdgeInsets.only(top: 16 * $styles.fixedScale),
                                 child: buildText(
                                   '- ${data.pullQuote1Author}',
                                   collapseAmt,
