@@ -22,6 +22,14 @@ class AppHeader extends StatelessWidget {
   final VoidCallback? onBack;
   final Widget Function(BuildContext context)? trailing;
 
+  /// How much vertical room the header occupies.
+  ///
+  /// Public because a screen that draws *under* the header has to reserve the
+  /// same amount, and it has to be the same number. The artifact carousel
+  /// reserved `64 * scale` and left the corner inset out, so on a watch its
+  /// content ran up behind the title by exactly [AppStyle.cornerInset].
+  static double get height => 64 * $styles.scale + $styles.cornerInset;
+
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
@@ -30,7 +38,7 @@ class AppHeader extends StatelessWidget {
         bottom: false,
         child: SizedBox(
           // Corner inset goes on the height too, or the centered btns stay tight to the top.
-          height: 64 * $styles.scale + $styles.cornerInset,
+          height: height,
           child: Stack(
             children: [
               MergeSemantics(

@@ -70,8 +70,12 @@ class _ArtifactScreenState extends State<ArtifactCarouselScreen> {
     // A watch reserves the header's real height rather than the phone's 200pt allowance, and
     // takes what is left. The 250 floor is taller than the whole screen, so it drops to a floor
     // that only guards against itemWidth reaching zero, which PageView will not accept.
+    //
+    // AppHeader.height, not a copy of its formula: this used to reserve
+    // `64 * scale` and omit the corner inset the header also adds, so the
+    // carousel drew up behind the title on every watch size.
     double itemHeight = isWatch
-        ? (context.heightPx - 64 * $styles.scale - bottomHeight).clamp(120 * $styles.fixedScale, 400)
+        ? (context.heightPx - AppHeader.height - bottomHeight).clamp(120 * $styles.fixedScale, 400)
         : (context.heightPx - 200 - bottomHeight).clamp(250, 400);
     double itemWidth = itemHeight * .666;
     // TODO: This could be optimized to only run if the size has changed...is it worth it?

@@ -10,6 +10,21 @@ class AppStyle {
   AppStyle({Size? screenSize, this.disableAnimations = false, this.highContrast = false})
     : scale = _scaleFor(screenSize);
 
+  /// Logical width of the widest watch, which is what the watch layout was
+  /// authored against. Measured, not assumed — Flutter is handed
+  /// `WKInterfaceDevice.screenBounds`, so these are roughly half the pixel
+  /// dimensions and do not match the marketing sizes:
+  ///
+  /// | model      | logical   | physical  |
+  /// |------------|-----------|-----------|
+  /// | 42mm       | 187 x 223 | 374 x 446 |
+  /// | 46mm       | 208 x 248 | 416 x 496 |
+  /// | Ultra 49mm | 211 x 257 | 422 x 514 |
+  static const double _watchReferenceWidth = 211;
+
+  /// Scale on the reference watch. Every other watch takes a share of it.
+  static const double _watchScale = 0.55;
+
   static double _scaleFor(Size? screenSize) {
     if (screenSize == null) return 1;
     const tabletXl = 1000;
@@ -19,7 +34,13 @@ class AppStyle {
     final shortestSide = screenSize.shortestSide;
     if (shortestSide > tabletXl) return 1.2;
     if (shortestSide > tabletLg) return 1.1;
-    if (shortestSide < watch) return 0.55;
+    if (shortestSide < watch) {
+      // Proportional, not flat. A 42mm is 187pt where an Ultra is 211 — 11%
+      // narrower — so a single factor tuned on the big watch leaves the small
+      // one with the same absolute sizes on less screen, and content that just
+      // fits at the top of the range overflows at the bottom.
+      return _watchScale * (shortestSide / _watchReferenceWidth);
+    }
     return 1;
   }
 
@@ -30,9 +51,16 @@ class AppStyle {
   /// plugin that has no implementation there.
   bool get isWatchTier => scale < 1;
 
+  /// How this watch compares to the one the layout was authored on: 1.0 on the
+  /// widest, ~0.89 on a 42mm. Zero outside the watch tier, where it is unused.
+  double get _watchFactor => isWatchTier ? scale / _watchScale : 0;
+
   /// Scale applied to [insets] only. A watch is ~87% as wide as a phone but only ~49% as tall,
   /// so the constraint is the aspect ratio, and padding has to tighten harder than content.
-  double get insetScale => isWatchTier ? 0.4 : scale;
+  ///
+  /// Tracks [_watchFactor] so padding shrinks with the screen rather than
+  /// eating a bigger share of a small one.
+  double get insetScale => isWatchTier ? 0.4 * _watchFactor : scale;
 
   /// Shrink factor for fixed px sizes that don't go through [scale] (tab bar, chrome, imagery).
   /// Pinned to 1 above the watch tier, so phone and tablet keep the values as written.
@@ -41,9 +69,10 @@ class AppStyle {
   /// Extra inset for controls in a screen corner. A watch display is a rounded rect, so a control
   /// at the edge is cut by the bezel. Zero elsewhere; full-bleed art ignores it.
   ///
-  /// TODO: 14 is derived from the 46mm radius and is a little generous on the smaller watches.
-  /// The display's corner radius isn't reported to Flutter, so there is nothing to read it from.
-  double get cornerInset => isWatchTier ? 14 : 0;
+  /// 14 is derived from the widest watch's corner radius and scales with the
+  /// screen. The radius still isn't reported to Flutter, so this tracks width
+  /// as a proxy — imperfect, but far closer than one constant for every model.
+  double get cornerInset => isWatchTier ? 14 * _watchFactor : 0;
   late final bool disableAnimations;
   late final bool highContrast;
 
