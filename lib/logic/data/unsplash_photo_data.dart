@@ -13,7 +13,27 @@ class UnsplashPhotoData {
 
   String getUnsplashUrl(int size) => '$url?q=90&fm=jpg&w=$size&fit=max';
 
+  static String _url(String id, int size) =>
+      'https://www.wonderous.info/unsplash/$id-$size.jpg';
+
   static String getSelfHostedUrl(String id, UnsplashPhotoSize targetSize) {
+    // A watch has its own ladder, because the phone/desktop one overshoots by
+    // an order of magnitude here. The screen is ~416pt wide (832px at 2x) and
+    // gallery tiles are a fraction of that, yet the rule below doubles for
+    // pixelRatio — so `xl` would fetch a 2400px, 827KB image for a slot a few
+    // hundred pixels across. The watch reaches the network through its paired
+    // iPhone at roughly 200 kB/s (measured on a Series 11), which makes that
+    // image about four seconds on its own, and a grid of `large` tiles at
+    // 1600px several times worse again.
+    //
+    // 800 covers the full screen almost exactly; 400 is comfortably above any
+    // tile. Both sizes are published, so this adds no new asset requirement.
+    if (PlatformInfo.isWatch) {
+      return _url(id, switch (targetSize) {
+        UnsplashPhotoSize.med || UnsplashPhotoSize.large => 400,
+        UnsplashPhotoSize.xl => 800,
+      });
+    }
     int size = switch (targetSize) {
       UnsplashPhotoSize.med => 400,
       UnsplashPhotoSize.large => 800,
@@ -22,7 +42,7 @@ class UnsplashPhotoData {
     if (PlatformInfo.pixelRatio >= 1.5 || PlatformInfo.isDesktop) {
       size *= 2;
     }
-    return 'https://www.wonderous.info/unsplash/$id-$size.jpg';
+    return _url(id, size);
   }
 
   /// List of image ids by collection. This can be generated with the [UnsplashDownloadService].generateUnsplashCollectionsClass().
