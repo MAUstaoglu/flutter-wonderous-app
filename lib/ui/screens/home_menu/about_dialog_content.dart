@@ -12,7 +12,8 @@ class AboutDialogContent extends StatelessWidget {
   Widget build(BuildContext context) {
     void handleTap(String url) {
       // There is no WebView on watchOS, and pushing one throws while building the Scaffold,
-      // which takes the back btn with it. Hand the link to the paired iPhone instead.
+      // which takes the back btn with it. url_launcher shows the page in the watch's own
+      // system browser instead.
       if (PlatformInfo.isDesktopOrWeb || PlatformInfo.isWatch) {
         launchUrl(Uri.parse(url));
       } else {

@@ -57,7 +57,7 @@ dependencies:
   smooth_page_indicator: ^2.0.1
   unsplash_client: ^3.0.0
   url_launcher: ^6.1.14
-  url_launcher_watchos: ^0.0.1
+  url_launcher_watchos: ^0.1.0
   webview_flutter: ^4.0.2
   youtube_player_iframe: ^6.0.0
 

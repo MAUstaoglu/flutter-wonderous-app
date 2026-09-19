@@ -1031,10 +1031,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher_watchos
-      sha256: "7f061ca494423c259d9fa91d33bc98f5e45940a07d572806e9b10318c7d83610"
+      sha256: "2035364e981d7b09ad88751b871415eef0f13d69261e4c8b1b39a6857bbe0b27"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.1"
+    version: "0.1.0"
   url_launcher_web:
     dependency: transitive
     description:

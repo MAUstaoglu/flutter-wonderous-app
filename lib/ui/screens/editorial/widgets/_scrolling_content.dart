@@ -179,9 +179,10 @@ class _YouTubeThumbnail extends StatelessWidget {
   Widget build(BuildContext context) {
     // On btn pressed:
     // The player renders through webview_flutter, which watchOS has no implementation for,
-    // so hand the video to the paired iPhone instead.
+    // so hand the video to the paired iPhone instead. externalApplication, because the
+    // default would open YouTube in the watch's own browser, which cannot play it.
     void handlePressed() => PlatformInfo.isWatch
-        ? launchUrl(Uri.parse('https://www.youtube.com/watch?v=$id'))
+        ? launchUrl(Uri.parse('https://www.youtube.com/watch?v=$id'), mode: LaunchMode.externalApplication)
         : context.go(ScreenPaths.video(id));
 
     return MergeSemantics(
