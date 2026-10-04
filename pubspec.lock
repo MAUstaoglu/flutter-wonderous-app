@@ -317,10 +317,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_watchos
-      sha256: bfddda87632ba8683ebf38c2fe99ef092059f940996c6f9752552fad15462fd6
+      sha256: ad29291e3c0b68fb5d86d693c40654f85b03c3afb97dc2a571cad9673aed2833
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0-beta.7"
+    version: "0.1.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -490,10 +490,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
+      sha256: "1ca20c894b1717686a2319b8548763d812bc0aabdac580420a44c5178c57a867"
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.2"
+    version: "0.20.3"
   io:
     dependency: transitive
     description:
@@ -554,10 +554,10 @@ packages:
     dependency: transitive
     description:
       name: matcher
-      sha256: dc0b7dc7651697ea4ff3e69ef44b0407ea32c487a39fff6a4004fa585e901861
+      sha256: "31bd099b47c10cd1aeb55146a2d46ce0277630ecef3f7dae54ad7873f36696cd"
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.19"
+    version: "0.12.20"
   material_color_utilities:
     dependency: transitive
     description:
@@ -570,10 +570,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "1741988757a65eb6b36abe716829688cf01910bbf91c34354ff7ec1c3de2b349"
+      sha256: "307249ce4ff29d58a18e97f6345f539382eb9c9c29ecda628900f31de0443dd9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.18.0"
+    version: "1.19.0"
   nested:
     dependency: transitive
     description:
@@ -618,10 +618,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus_watchos
-      sha256: "867dc35181784815fc1eb45713f2fa2aee1a52e5e56dd41c739a32f42ed56238"
+      sha256: af6add077188bebcd121fc2f34a2e7d9e5ca835e531ee33067cea2d20e341f69
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.1"
   particle_field:
     dependency: "direct main"
     description:
@@ -690,10 +690,10 @@ packages:
     dependency: "direct main"
     description:
       name: path_provider_watchos
-      sha256: "33a66ceac1c3d0825a354b517c62ce59453d2ed897dc0f3b338425ecd6fe9525"
+      sha256: "7503b5fa8ed3f2f214e9964df3b1fbede37ebae89791667042374fe6397febcf"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.1"
+    version: "0.1.0"
   path_provider_windows:
     dependency: transitive
     description:
@@ -850,10 +850,10 @@ packages:
     dependency: "direct main"
     description:
       name: shared_preferences_watchos
-      sha256: "205ac141582c6bb32dffbfd0af27a93ffd49621c2ad2e0846838fd45f89d3f87"
+      sha256: "2931ff28d0fc0fe51ef5ce1f65c8ce6b61fce1561cdfbc933d5f5606b3706a9e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.1"
   shared_preferences_web:
     dependency: transitive
     description:
@@ -943,10 +943,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: "949a932224383300f01be9221c39180316445ecb8e7547f70a41a35bf421fb9e"
+      sha256: "2a122cbe059f8b610d3a5415f42e255b6c17b1f21eee1d960f31080237fb4f11"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.11"
+    version: "0.7.12"
   typed_data:
     dependency: transitive
     description:
@@ -1031,10 +1031,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher_watchos
-      sha256: "2035364e981d7b09ad88751b871415eef0f13d69261e4c8b1b39a6857bbe0b27"
+      sha256: ee06e7daa374e74dee4d164d6f68451f7de9f6e2b6368c02591093cfbc63cc40
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.1"
   url_launcher_web:
     dependency: transitive
     description:
@@ -1079,10 +1079,10 @@ packages:
     dependency: transitive
     description:
       name: vector_math
-      sha256: d530bd74fea330e6e364cda7a85019c434070188383e1cd8d9777ee586914c5b
+      sha256: f36f9f3be64c6198714492bb455c11056e33e2f85d9a0b676a48301e44fdcf47
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.4.2"
   vm_service:
     dependency: transitive
     description:
