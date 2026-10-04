@@ -204,8 +204,11 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
                     child: Align(
                       alignment: backBtnAlign,
                       child: Padding(
-                        // Not in an AppHeader, so it takes the corner inset itself
-                        padding: EdgeInsets.all($styles.insets.sm + $styles.cornerInset),
+                        // Not in an AppHeader, so on a watch it adds the safe area
+                        // itself, which keeps it clear of the rounded corner there.
+                        padding:
+                            EdgeInsets.all($styles.insets.sm) +
+                            ($styles.isWatchTier ? context.mq.padding : EdgeInsets.zero),
                         child: BackBtn(icon: AppIcons.north, onPressed: _handleBackPressed),
                       ),
                     ),

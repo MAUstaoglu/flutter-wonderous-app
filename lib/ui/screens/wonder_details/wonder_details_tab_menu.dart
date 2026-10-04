@@ -31,7 +31,10 @@ class WonderDetailsTabMenu extends StatelessWidget {
     // inset comes off both ends too, so the outermost btns clear the rounded corners.
     // Only the hz bar runs along a screen edge with a rounded corner at each end, so only it
     // gives up the corner inset (applied as padding on the btn row below).
-    final double cornerInset = isVertical ? 0 : $styles.cornerInset;
+    // A watch reports its rounded corners as the safe area's side insets.
+    final double cornerInset = $styles.isWatchTier && !isVertical
+        ? max(context.mq.padding.left, context.mq.padding.right)
+        : 0;
     final availableSize =
         ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md - cornerInset * 2);
     // Calculate tabBtnSize based on availableSize

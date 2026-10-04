@@ -75,7 +75,10 @@ class _ArtifactScreenState extends State<ArtifactCarouselScreen> {
     // `64 * scale` and omit the corner inset the header also adds, so the
     // carousel drew up behind the title on every watch size.
     double itemHeight = isWatch
-        ? (context.heightPx - AppHeader.height - bottomHeight).clamp(120 * $styles.fixedScale, 400)
+        ? (context.heightPx - context.mq.padding.top - AppHeader.height - bottomHeight).clamp(
+            120 * $styles.fixedScale,
+            400,
+          )
         : (context.heightPx - 200 - bottomHeight).clamp(250, 400);
     double itemWidth = itemHeight * .666;
     // TODO: This could be optimized to only run if the size has changed...is it worth it?

@@ -16,7 +16,6 @@ void main() {
         final style = AppStyle(screenSize: entry.value);
         expect(style.isWatchTier, isFalse, reason: entry.key);
         expect(style.fixedScale, 1, reason: entry.key);
-        expect(style.cornerInset, 0, reason: entry.key);
         expect(style.insetScale, style.scale, reason: entry.key);
       }
     });
@@ -27,7 +26,6 @@ void main() {
       expect(style.scale, lessThan(1));
       expect(style.fixedScale, style.scale);
       expect(style.insetScale, lessThan(style.scale));
-      expect(style.cornerInset, greaterThan(0));
     });
 
     test('a smaller watch gets smaller factors, not the same ones', () {
@@ -45,12 +43,10 @@ void main() {
       expect(small.scale, lessThan(mid.scale));
       expect(mid.scale, lessThan(large.scale));
       expect(small.insetScale, lessThan(large.insetScale));
-      expect(small.cornerInset, lessThan(large.cornerInset));
 
       // The widest watch is the reference, so it keeps the authored values.
       expect(large.scale, closeTo(0.55, 0.001));
       expect(large.insetScale, closeTo(0.4, 0.001));
-      expect(large.cornerInset, closeTo(14, 0.001));
 
       // And the smallest tracks its width rather than drifting arbitrarily.
       expect(small.scale, closeTo(0.55 * 187 / 211, 0.001));
@@ -69,7 +65,6 @@ void main() {
       expect(style.isWatchTier, isFalse);
       expect(style.fixedScale, 1);
       expect(style.insetScale, 1);
-      expect(style.cornerInset, 0);
     });
   });
 }

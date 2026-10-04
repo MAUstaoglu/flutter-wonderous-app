@@ -22,13 +22,11 @@ class AppHeader extends StatelessWidget {
   final VoidCallback? onBack;
   final Widget Function(BuildContext context)? trailing;
 
-  /// How much vertical room the header occupies.
+  /// How much vertical room the header occupies below the top safe area.
   ///
   /// Public because a screen that draws *under* the header has to reserve the
-  /// same amount, and it has to be the same number. The artifact carousel
-  /// reserved `64 * scale` and left the corner inset out, so on a watch its
-  /// content ran up behind the title by exactly [AppStyle.cornerInset].
-  static double get height => 64 * $styles.scale + $styles.cornerInset;
+  /// same amount, and it has to be the same number.
+  static double get height => 64 * $styles.scale;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,6 @@ class AppHeader extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: SizedBox(
-          // Corner inset goes on the height too, or the centered btns stay tight to the top.
           height: height,
           child: Stack(
             children: [
@@ -72,8 +69,9 @@ class AppHeader extends StatelessWidget {
                 child: Center(
                   child: Row(
                     children: [
-                      // Corner btns need to clear the rounded display corner
-                      Gap($styles.insets.sm + $styles.cornerInset),
+                      // On a watch the SafeArea above keeps the btns clear of the
+                      // rounded corners: flutter-watchos reports them as its insets.
+                      Gap($styles.insets.sm),
                       if (showBackBtn)
                         BackBtn(
                           onPressed: onBack,
@@ -82,7 +80,7 @@ class AppHeader extends StatelessWidget {
                         ),
                       Spacer(),
                       if (trailing != null) trailing!.call(context),
-                      Gap($styles.insets.sm + $styles.cornerInset),
+                      Gap($styles.insets.sm),
                       //if (showBackBtn) Container(width: $styles.insets.lg * 2, alignment: Alignment.centerLeft, child: child),
                     ],
                   ),

@@ -66,13 +66,6 @@ class AppStyle {
   /// Pinned to 1 above the watch tier, so phone and tablet keep the values as written.
   double get fixedScale => isWatchTier ? scale : 1;
 
-  /// Extra inset for controls in a screen corner. A watch display is a rounded rect, so a control
-  /// at the edge is cut by the bezel. Zero elsewhere; full-bleed art ignores it.
-  ///
-  /// 14 is derived from the widest watch's corner radius and scales with the
-  /// screen. The radius still isn't reported to Flutter, so this tracks width
-  /// as a proxy — imperfect, but far closer than one constant for every model.
-  double get cornerInset => isWatchTier ? 14 * _watchFactor : 0;
   late final bool disableAnimations;
   late final bool highContrast;
 
