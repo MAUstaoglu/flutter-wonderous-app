@@ -21,9 +21,18 @@ class HomeMenu extends StatefulWidget {
   State<HomeMenu> createState() => _HomeMenuState();
 }
 
-class _HomeMenuState extends State<HomeMenu> {
-  double _btnSize(BuildContext context) => (context.sizePx.shortestSide / 5).clamp(60, 100);
+/// The size of a wonder btn in the grid. The grid and each btn read it here, so the two agree.
+double _menuBtnSize(BuildContext context) {
+  if (!$styles.isWatchTier) return (context.sizePx.shortestSide / 5).clamp(60, 100);
+  // A watch fills the width between its corner insets: the phone's 60pt floor made
+  // the grid 216pt wide on a 208pt screen. The view's own insets, because inside
+  // the menu's SafeArea the MediaQuery ones read 0.
+  final view = View.of(context);
+  final double insets = (view.padding.left + view.padding.right) / view.devicePixelRatio;
+  return (context.sizePx.width - insets) / (3 * 1.2);
+}
 
+class _HomeMenuState extends State<HomeMenu> {
   void _handleAboutPressed(BuildContext context) async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     if (!context.mounted) return;
@@ -47,7 +56,7 @@ class _HomeMenuState extends State<HomeMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final double gridWidth = _btnSize(context) * 3 * 1.2;
+    final double gridWidth = _menuBtnSize(context) * 3 * 1.2;
     return Stack(
       children: [
         /// Backdrop / Underlay
@@ -109,7 +118,7 @@ class _HomeMenuState extends State<HomeMenu> {
         buildRow([
           _GridBtn(wondersLogic.all[3], widget.data),
           SizedBox(
-            width: _btnSize(context),
+            width: _menuBtnSize(context),
             child: SvgPicture.asset(
               SvgPaths.compassFull,
               colorFilter: $styles.colors.offWhite.colorFilter,
@@ -167,7 +176,6 @@ class _GridBtn extends StatefulWidget {
   const _GridBtn(this.btnData, this.selectedData);
   final WonderData btnData;
   final WonderData selectedData;
-  double _btnSize(BuildContext context) => (context.sizePx.shortestSide / 5).clamp(60, 100);
 
   @override
   State<_GridBtn> createState() => _GridBtnState();
@@ -186,8 +194,8 @@ class _GridBtnState extends State<_GridBtn> {
     Widget iconImage = Image.asset(btnData.type.homeBtn, fit: BoxFit.cover);
 
     Widget gridBtn = Container(
-      width: widget._btnSize(context),
-      height: widget._btnSize(context),
+      width: _menuBtnSize(context),
+      height: _menuBtnSize(context),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular($styles.corners.md),
         boxShadow: !isSelected
