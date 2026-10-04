@@ -133,6 +133,7 @@ class _WonderEventsState extends State<WonderEvents> {
 
   /// Portrait layout is a stack with the EventsList scrolling overtop of the WonderImage
   Widget _buildSingleColumn() {
+    if ($styles.isWatchTier) return _buildWatchColumn();
     return LayoutBuilder(
       builder: (_, constraints) {
         double topHeight = max(constraints.maxHeight * .55, 200);
@@ -169,6 +170,42 @@ class _WonderEventsState extends State<WonderEvents> {
           ),
         );
       },
+    );
+  }
+
+  /// The portrait layout on a watch. The phone's sizes do not fit there: its
+  /// 200pt floor for the image is most of the screen, so the image ran under
+  /// the timeline button. Here the image and the list share exactly the space
+  /// above the button, and the list starts below the image, scrolling up over
+  /// it as on a phone.
+  Widget _buildWatchColumn() {
+    return Column(
+      children: [
+        Expanded(
+          child: LayoutBuilder(
+            builder: (_, constraints) {
+              final double topHeight = constraints.maxHeight;
+              return Stack(
+                children: [
+                  _WonderImageWithTimeline(height: topHeight, data: _data),
+                  _EventsList(
+                    key: _eventsListKey,
+                    data: _data,
+                    topHeight: topHeight,
+                    blurOnScroll: true,
+                    showTopGradient: false,
+                    onScroll: _handleScroll,
+                    initialScrollOffset: _scrollPos,
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+        Gap($styles.insets.sm),
+        _TimelineBtn(type: _data.type, width: $styles.sizes.maxContentWidth2),
+        Gap($styles.insets.sm),
+      ],
     );
   }
 }

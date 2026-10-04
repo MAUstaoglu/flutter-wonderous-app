@@ -149,7 +149,9 @@ class _ArtifactScreenState extends State<ArtifactCarouselScreen> {
 
               /// Header
               AppHeader(
-                title: $strings.artifactsTitleArtifacts,
+                // A watch has no room for the title above the artifact, which
+                // drew over it; the tab bar already names the screen.
+                title: isWatch ? null : $strings.artifactsTitleArtifacts,
                 showBackBtn: false,
                 isTransparent: true,
                 trailing: (context) => CircleBtn(

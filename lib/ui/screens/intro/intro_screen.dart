@@ -30,6 +30,21 @@ class _IntroScreenState extends State<IntroScreen> {
   static const double _textHeight = 110;
   static const double _textHeightSmall = 100;
   static const double _pageIndicatorHeight = 55;
+  // A watch takes the small image with a shorter logo, a taller text box and
+  // a shorter indicator row: the third description runs to three lines there
+  // and overflowed the small text box.
+  static const double _logoHeightWatch = 84;
+  static const double _textHeightWatch = 116;
+  static const double _pageIndicatorHeightWatch = 44;
+
+  // The page text and the column behind it must line up, so both read these.
+  static double logoHeight(bool smallMode) =>
+      _scaled($styles.isWatchTier ? _logoHeightWatch : (smallMode ? _logoHeightSmall : _logoHeight));
+  static double imageSize(bool smallMode) => _scaled(smallMode ? _imageSizeSmall : _imageSize);
+  static double textHeight(bool smallMode) =>
+      _scaled($styles.isWatchTier ? _textHeightWatch : (smallMode ? _textHeightSmall : _textHeight));
+  static double pageIndicatorHeight() =>
+      _scaled($styles.isWatchTier ? _pageIndicatorHeightWatch : _pageIndicatorHeight);
 
   static List<_PageData> pageData = [];
 
@@ -139,7 +154,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         Semantics(
                           header: true,
                           child: Container(
-                            height: _scaled(smallMode ? _logoHeightSmall : _logoHeight),
+                            height: logoHeight(smallMode),
                             alignment: Alignment.center,
                             child: _WonderousLogo(),
                           ),
@@ -147,8 +162,8 @@ class _IntroScreenState extends State<IntroScreen> {
 
                         // masked image:
                         SizedBox(
-                          height: _scaled(smallMode ? _imageSizeSmall : _imageSize),
-                          width: _scaled(smallMode ? _imageSizeSmall : _imageSize),
+                          height: imageSize(smallMode),
+                          width: imageSize(smallMode),
                           child: ValueListenableBuilder<int>(
                             valueListenable: _currentPage,
                             builder: (_, value, __) {
@@ -166,11 +181,11 @@ class _IntroScreenState extends State<IntroScreen> {
                         ),
 
                         // placeholder gap for text:
-                        Gap(_scaled(smallMode ? _IntroScreenState._textHeightSmall : _IntroScreenState._textHeight)),
+                        Gap(textHeight(smallMode)),
 
                         // page indicator:
                         Container(
-                          height: _scaled(_pageIndicatorHeight),
+                          height: pageIndicatorHeight(),
                           alignment: Alignment(0.0, 0),
                           child: AppPageIndicator(
                             count: pageData.length,
@@ -197,12 +212,15 @@ class _IntroScreenState extends State<IntroScreen> {
                       child: _buildFinishBtn(context),
                     ),
 
-                    BottomCenter(
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: $styles.insets.lg),
-                        child: _buildNavText(context),
+                    // Not on a watch: there the page indicator reaches the bottom and
+                    // the text sat on it. The dots and the arrow say the same.
+                    if (!$styles.isWatchTier)
+                      BottomCenter(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: $styles.insets.lg),
+                          child: _buildNavText(context),
+                        ),
                       ),
-                    ),
                   ],
                 ],
               ),
@@ -297,15 +315,9 @@ class _Page extends StatelessWidget {
         child: Column(
           children: [
             Spacer(),
-            Gap(
-              _scaled(
-                smallMode
-                    ? (_IntroScreenState._imageSizeSmall + _IntroScreenState._logoHeightSmall)
-                    : (_IntroScreenState._imageSize + _IntroScreenState._logoHeight),
-              ),
-            ),
+            Gap(_IntroScreenState.imageSize(smallMode) + _IntroScreenState.logoHeight(smallMode)),
             SizedBox(
-              height: _scaled(smallMode ? _IntroScreenState._textHeightSmall : _IntroScreenState._textHeight),
+              height: _IntroScreenState.textHeight(smallMode),
               width: _scaled(smallMode ? 300 : 400),
               child: StaticTextScale(
                 child: Column(
@@ -321,7 +333,7 @@ class _Page extends StatelessWidget {
                 ),
               ),
             ),
-            Gap(_scaled(_IntroScreenState._pageIndicatorHeight)),
+            Gap(_IntroScreenState.pageIndicatorHeight()),
             Spacer(flex: 2),
           ],
         ),
