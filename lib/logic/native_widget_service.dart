@@ -6,7 +6,9 @@ class NativeWidgetService {
   static const _iosAppGroupId = 'group.com.gskinner.flutter.wonders.widget';
   static const _iosAppName = 'WonderousWidget';
 
-  final bool isSupported = PlatformInfo.isIOS;
+  // Not on a watch: it reports as iOS, but the home-screen widget is the
+  // iPhone's, and home_widget has no watchOS implementation to call.
+  final bool isSupported = PlatformInfo.isIOS && !PlatformInfo.isWatch;
 
   Future<void> init() async {
     if (!isSupported) return;
